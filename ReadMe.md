@@ -1,32 +1,22 @@
-# Productivity Pro - To-Do List App
+# 📸 Application Screenshot
 
-![App Screenshot](c:\Users\ANKUR DUTTA\Pictures\Screenshots\Screenshot 2025-07-14 235444.png)
+Here's a preview of the To-Do List App in action:
 
-A modern, feature-rich Java Swing application for managing your daily tasks with priority tracking and completion status.
+![To-Do List Application Screenshot](./Screenshot%202025-07-14%20235444.png)
 
-## Features ✨
+## Screenshot Features Demonstrated:
+- **Priority tagging** (High/Medium/Low)
+- **Due date management** with "Today" indicators
+- **Task completion** tracking
+- **Time-sensitive tasks** with exact timestamps
+- **Action buttons** for task management
 
-- ✅ Add tasks with priority levels (⭐ Low, ⭐⭐ Medium, ⭐⭐⭐ High)
-- ✔️ Mark tasks as complete with interactive checkboxes
-- ⏰ Set due dates and times
-- 📅 Automatic date display in the header
-- 🎨 Clean, professional UI with color-coded priorities
-- 💾 Save/Load functionality to preserve your tasks
-- 🗑️ Remove tasks or clear the entire list
-- 📱 Responsive design that works on different screen sizes
-
-## Technologies Used 🛠️
-
-- Java 11+
-- Java Swing for GUI
-- Java Preferences API for data persistence
-- Gradle (optional build system)
-
-## Installation & Setup ⚙️
-
-### Prerequisites
-- Java JDK 11 or later
-- (Optional) Gradle for building
+## Example Tasks Shown:
+1. `Wake up at 7:00 am` (High priority)
+2. `Get fresh within 7:30 am` (Medium priority)
+3. `Have Breakfast within 8:00 am` (High priority)
+4. `Ready for go to College` (Low priority)
+5. `Assignment submission` (Completed task)
 
 ### Running the Application
 1. Clone the repository:
