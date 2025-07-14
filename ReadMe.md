@@ -32,4 +32,4 @@ A modern, feature-rich Java Swing application for managing your daily tasks with
 ### Running the Application
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Ankur160605/ToDoList.git
+   git clone https://github.com/Ankur160605/Java.ToDoList.git
