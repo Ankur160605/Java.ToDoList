@@ -1,7 +1,6 @@
 # Productivity Pro - To-Do List App
 
-![App Screenshot]
-![App Interface] (<Screenshot 2025-07-14 235444-1.png>)
+![App Screenshot](c:\Users\ANKUR DUTTA\Pictures\Screenshots\Screenshot 2025-07-14 235444.png)
 
 A modern, feature-rich Java Swing application for managing your daily tasks with priority tracking and completion status.
 
