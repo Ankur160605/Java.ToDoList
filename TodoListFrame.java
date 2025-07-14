@@ -2,6 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
@@ -11,6 +16,8 @@ public class TodoListFrame extends JFrame {
     private JTextField taskInput;
     private JComboBox<String> priorityComboBox;
     private JCheckBox completedCheckBox;
+    private JSpinner dateSpinner;
+    private JSpinner timeSpinner;
     private Preferences prefs;
     private static final String TASKS_KEY = "todo_tasks";
 
@@ -21,6 +28,18 @@ public class TodoListFrame extends JFrame {
         setLocationRelativeTo(null);
         setBackground(Color.YELLOW);
         getContentPane().setBackground(new Color(13,43,161));
+
+        // Initialize date and time spinners
+        dateSpinner = new JSpinner(new SpinnerDateModel());
+        JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "yyyy-MM-dd");
+        dateSpinner.setEditor(dateEditor);
+        dateSpinner.setValue(new Date());
+
+        timeSpinner = new JSpinner(new SpinnerDateModel());
+        JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(timeSpinner, "hh:mm a");
+        timeSpinner.setEditor(timeEditor);
+        timeSpinner.setValue(new Date());
+
         prefs = Preferences.userNodeForPackage(TodoListFrame.class);
 
         todoListModel = new DefaultListModel<>();
@@ -33,20 +52,29 @@ public class TodoListFrame extends JFrame {
         taskInput.setForeground(new Color(60, 60, 60));
         priorityComboBox = new JComboBox<>(new String[]{"Low", "Medium", "High"});
         priorityComboBox.setRenderer(new DefaultListCellRenderer() {
-
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, 
             int index, boolean isSelected, boolean cellHasFocus) {
-            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-            return this;
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+                return this;
             }
         });
         priorityComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        priorityComboBox.setBackground(Color.BLUE);
+        priorityComboBox.setBackground(Color.WHITE);
         priorityComboBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(200, 210, 220)),
-    BorderFactory.createEmptyBorder(0, 0, 0, 0)));
-    completedCheckBox = new JCheckBox("Completed");
+                BorderFactory.createEmptyBorder(0, 0, 0, 0)));
+        
+        JPanel inputRow = new JPanel(new BorderLayout(10, 0));
+        inputRow.setOpaque(false);
+
+        JPanel rightPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+        rightPanel.add(priorityComboBox);
+        rightPanel.add(dateSpinner);
+        rightPanel.add(timeSpinner);
+        inputRow.add(rightPanel, BorderLayout.EAST);
+        
+        completedCheckBox = new JCheckBox("Completed");
 
         JButton addButton = new JButton("Add Task");
         JButton removeButton = new JButton("Remove Selected");
@@ -54,39 +82,31 @@ public class TodoListFrame extends JFrame {
         JButton saveButton = new JButton("Save Tasks");
         JButton loadButton = new JButton("Load Tasks");
 
+        JPanel inputPanel = new JPanel(new BorderLayout(10, 10));
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        inputPanel.setBackground(new Color(245,248,252));
+
+        JPanel inputContainer = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+                                   RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(new Color(0, 0, 0, 20));
+                g2d.fillRoundRect(2, 3, getWidth()-4, getHeight()-4, 15, 15);
+            }
+        };
+
+        inputContainer.setOpaque(false);
+        inputContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+        inputContainer.add(taskInput, BorderLayout.CENTER);
         
-JPanel inputPanel = new JPanel(new BorderLayout(10, 10));
-inputPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-inputPanel.setBackground(new Color(245,248,252));
+        inputRow.add(inputContainer, BorderLayout.CENTER);
+        inputPanel.add(inputRow, BorderLayout.NORTH);
+        inputPanel.add(completedCheckBox, BorderLayout.SOUTH);
 
-JPanel inputContainer = new JPanel(new BorderLayout()) {
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
-                           RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setColor(new Color(0, 0, 0, 20));
-        g2d.fillRoundRect(2, 3, getWidth()-4, getHeight()-4, 15, 15);
-    }
-};
-
-inputContainer.setOpaque(false);
-inputContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-inputContainer.add(taskInput, BorderLayout.CENTER);
-priorityComboBox.setBackground(Color.WHITE);
-priorityComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-priorityComboBox.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));
-JPanel inputRow = new JPanel(new BorderLayout(10, 0));
-inputRow.setOpaque(false);
-inputRow.add(inputContainer, BorderLayout.CENTER);
-inputRow.add(priorityComboBox, BorderLayout.EAST);
-
-inputPanel.add(inputRow, BorderLayout.NORTH);
-inputPanel.add(completedCheckBox, BorderLayout.CENTER);
-        
-
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 1,1));
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 5, 10, 10));
         buttonPanel.add(addButton);
         buttonPanel.add(removeButton);
         buttonPanel.add(clearButton);
@@ -115,11 +135,8 @@ inputPanel.add(completedCheckBox, BorderLayout.CENTER);
         loadButton.setForeground(Color.WHITE);
         taskInput.addActionListener(e -> addTask());
 
-
-        // Load saved tasks on startup
         loadTasks();
 
-        // Set up window listener to save on close
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -133,7 +150,14 @@ inputPanel.add(completedCheckBox, BorderLayout.CENTER);
         if (!description.isEmpty()) {
             String priority = (String) priorityComboBox.getSelectedItem();
             boolean completed = completedCheckBox.isSelected();
-            Task newTask = new Task(description, priority, completed);
+            
+            Date selectedDate = (Date) dateSpinner.getValue();
+            LocalDate dueDate = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            
+            Date selectedTime = (Date) timeSpinner.getValue();
+            LocalTime dueTime = selectedTime.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
+            
+            Task newTask = new Task(description, priority, completed, dueDate, dueTime);
             todoListModel.addElement(newTask);
             taskInput.setText("");
             completedCheckBox.setSelected(false);
@@ -201,43 +225,55 @@ inputPanel.add(completedCheckBox, BorderLayout.CENTER);
 
     class TaskListRenderer extends DefaultListCellRenderer {
         @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, 
+                int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-    
-
-
+            
             Task task = (Task) value;
+            
+            String dateText = "";
+            String timeText = "";
+            if (task.getDueDate() != null) {
+                dateText = " - " + task.getDueDate().format(DateTimeFormatter.ofPattern("MMM dd"));
+                if (task.getDueTime() != null) {
+                    timeText = " " + task.getDueTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
+                }
+                
+                if (task.getDueDate().isBefore(LocalDate.now())) {
+                    dateText = "<font color='red'>" + dateText + " (Overdue)" + timeText + "</font>";
+                } else if (task.getDueDate().isEqual(LocalDate.now())) {
+                    dateText = "<font color='violate'>" + dateText + " (Today)" + timeText + "</font>";
+                } else {
+                    dateText = dateText + timeText;
+                }
+            }
 
+            setText("<html><div style='padding: 3px'>" + 
+                   task.getDescription() + 
+                   "<br><small><font color='#666666'>" + 
+                   task.getPriority() + 
+                   dateText +
+                   (task.isCompleted() ? " • Completed" : "") + 
+                   "</font></small></div></html>");
+            
             setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(128,128,128)),
-            BorderFactory.createEmptyBorder(7, 7, 7, 7)
-        ));
+                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(128,128,128)),
+                BorderFactory.createEmptyBorder(7, 7, 7, 7)
+            ));
 
-         if (!isSelected) {
-            setBackground(index % 2 == 0 ? Color.WHITE : new Color(248, 248, 248));
-        }
-        else {
-            setBackground(new Color(207,244,252));
-        }
+            if (!isSelected) {
+                setBackground(index % 2 == 0 ? Color.WHITE : new Color(248, 248, 248));
+            } else {
+                setBackground(new Color(207,244,252));
+            }
 
-        setText("<html><div style='padding: 3px'>" + 
-               task.getDescription() + 
-               "<br><small><font color='#666666'>" + 
-               task.getPriority() + 
-               (task.isCompleted() ? " • Completed" : "") + 
-               "</font></small></div></html>");
-        
-        
-            
-            
-            
             if (task.isCompleted()) {
                 setForeground(Color.GRAY);
                 setFont(getFont().deriveFont(Font.ITALIC));
             } else {
                 switch (task.getPriority()) {
                     case "High":
-                        setForeground(new Color (200,0,0));
+                        setForeground(new Color(200,0,0));
                         setFont(getFont().deriveFont(Font.BOLD));
                         break;
                     case "Medium":
@@ -252,38 +288,60 @@ inputPanel.add(completedCheckBox, BorderLayout.CENTER);
             return this;
         }
     }
-}
 
-class Task implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private String description;
-    private String priority;
-    private boolean completed;
+    class Task implements Serializable {
+        private static final long serialVersionUID = 1L;
+        private String description;
+        private String priority;
+        private boolean completed;
+        private LocalDate dueDate;
+        private LocalTime dueTime;
 
-    public Task(String description, String priority, boolean completed) {
-        this.description = description;
-        this.priority = priority;
-        this.completed = completed;
-    }
+        public Task(String description, String priority, boolean completed, LocalDate dueDate, LocalTime dueTime) {
+            this.description = description;
+            this.priority = priority;
+            this.completed = completed;
+            this.dueDate = dueDate;
+            this.dueTime = dueTime;
+        }
 
-    public String getDescription() {
-        return description;
-    }
+        public String getDescription() {
+            return description;
+        }
 
-    public String getPriority() {
-        return priority;
-    }
+        public String getPriority() {
+            return priority;
+        }
 
-    public boolean isCompleted() {
-        return completed;
-    }
+        public boolean isCompleted() {
+            return completed;
+        }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
+        public void setCompleted(boolean completed) {
+            this.completed = completed;
+        }
 
-    @Override
-    public String toString() {
-        return description + " (" + priority + ")" + (completed ? " - DONE" : "");
+        public LocalDate getDueDate() {
+            return dueDate;
+        }
+
+        public void setDueDate(LocalDate dueDate) {
+            this.dueDate = dueDate;
+        }
+
+        public LocalTime getDueTime() {
+            return dueTime;
+        }
+
+        public void setDueTime(LocalTime dueTime) {
+            this.dueTime = dueTime;
+        }
+
+        @Override
+        public String toString() {
+            String dateStr = (dueDate != null) ? " - " + dueDate.format(DateTimeFormatter.ofPattern("MMM dd")) : "";
+            String timeStr = (dueTime != null) ? " " + dueTime.format(DateTimeFormatter.ofPattern("hh:mm a")) : "";
+            return description + " (" + priority + ")" + dateStr + timeStr + (completed ? " - DONE" : "");
+        }
     }
 }

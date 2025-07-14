@@ -1,8 +1,7 @@
 # Productivity Pro - To-Do List App
 
 ![App Screenshot]
-![App Interface](<Screenshot 2025-07-14 011148.png>)
-![Work interface](<Screenshot 2025-07-14 011148-1.png>)
+![App Interface](c:\Users\ANKUR DUTTA\Pictures\Screenshots\Screenshot 2025-07-14 235444.png)
 
 A modern, feature-rich Java Swing application for managing your daily tasks with priority tracking and completion status.
 
@@ -10,6 +9,7 @@ A modern, feature-rich Java Swing application for managing your daily tasks with
 
 - ✅ Add tasks with priority levels (⭐ Low, ⭐⭐ Medium, ⭐⭐⭐ High)
 - ✔️ Mark tasks as complete with interactive checkboxes
+- ⏰ Set due dates and times
 - 📅 Automatic date display in the header
 - 🎨 Clean, professional UI with color-coded priorities
 - 💾 Save/Load functionality to preserve your tasks
