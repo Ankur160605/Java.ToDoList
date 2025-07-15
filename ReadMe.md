@@ -1,8 +1,9 @@
 # 📸 Application Screenshot
 
 Here's a preview of the To-Do List App in action:
-<img width="602" height="511" alt="image" src="https://github.com/user-attachments/assets/a785ba91-6ee5-46a1-a012-158141e71740" />
-![Main In]
+![App Interface]
+<img width="1253" height="995" alt="image" src="https://github.com/user-attachments/assets/eaa57c06-0408-4eb1-a34e-7bf42da86755" />
+
 
 
 
