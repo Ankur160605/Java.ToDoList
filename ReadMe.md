@@ -2,8 +2,8 @@
 
 Here's a preview of the To-Do List App in action:
 
-![To-Do List Application Screenshot](<img width="1255" height="977" alt="Screenshot 2025-07-14 235444-1" src="https://github.com/user-attachments/assets/0da06027-b8b8-4de8-aa9c-31b9b89a2ca0" />
-)
+<img width="1255" height="977" alt="image" src="https://github.com/user-attachments/assets/9be84e0d-2c06-4da7-98be-76c2c7f9bc10" />
+
 
 ## Screenshot Features Demonstrated:
 - **Priority tagging** (High/Medium/Low)
